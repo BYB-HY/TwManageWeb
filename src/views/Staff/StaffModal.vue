@@ -109,7 +109,7 @@ import { mapState, mapMutations } from "vuex"
                                 this.$emit("reload")
                             })
                         } else {
-                            post("/employees_entry",this.ruleForm).then(()=>{
+                            post("/employees/entry",this.ruleForm).then(()=>{
                                 this.$notify({
                                     title: '操作成功',
                                     type: 'success'

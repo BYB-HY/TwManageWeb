@@ -14,10 +14,10 @@
                         <el-form-item>
                             <el-button type="primary" @click="login()" :loading="loading">登录</el-button>
                         </el-form-item>
-                        <el-form-item>
+                        <!-- <el-form-item>
                             <p>username：admin</p>
                             <p>password：123456</p>
-                        </el-form-item>
+                        </el-form-item> -->
                     </el-form>
                 </el-card>
             </el-col>

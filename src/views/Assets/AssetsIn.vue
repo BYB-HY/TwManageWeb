@@ -123,7 +123,7 @@ import {post} from "@/utils/http"
         components:{BreadCrumb},
         methods:{
             save(){
-                post('/assets_in',this.ruleForm).then(()=>{
+                post('/assets/in',this.ruleForm).then(()=>{
                     this.$message({
                         message:'添加成功',
                         type:'success'

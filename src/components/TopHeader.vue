@@ -36,7 +36,7 @@
                 handleCommand(item){
                     if(item=="logout"){
                         removeToken();
-                        // this.$router.push("/login")
+                        this.$router.push("/login")
                     }
                 },
                 //获取入职时间，并存入本地浏览器

@@ -1,129 +1,124 @@
 <template>
     <div>
-        <Bread-Crumb />
-        <el-card>
-            <el-row type="">
-                <el-button type="primary" @click="back">返回</el-button>
-                <el-button size="mini" type="danger">出入库</el-button>
+        <el-dialog :title="title" :visible="visible" width="50%" :before-close="handleClose">
+            <el-row :gutter="20">
+                <el-form :model="ruleForm" label-width="80px" :rules="rules" ref="ruleform">
+                    <el-col :span="12">
+                        <el-form-item label="资产编号" prop="asset_number">
+                            {{ ruleForm.asset_number }}
+                        </el-form-item>
+                        <el-form-item label="资产类型" prop="asset_type">
+                            <el-input v-model="ruleForm.asset_type"></el-input>
+                        </el-form-item>
+                        <!-- <el-form-item label="使用人" prop="landline_phone">
+                            <el-input v-model="ruleForm.landline_phone"></el-input>
+                        </el-form-item> -->
+                        <el-form-item label="入库时间" prop="entry_time">
+                            <el-input v-model="ruleForm.entry_time"></el-input>
+                        </el-form-item>
+                        <el-form-item label="出库时间" prop="exit_time">
+                            <el-input v-model="ruleForm.exit_time"></el-input>
+                        </el-form-item>
+                        <el-form-item label="备注" prop="remarks">
+                            <el-input v-model="ruleForm.remarks"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="12">
+                        <el-form-item label="资产品牌" prop="brand">
+                            <el-input v-model="ruleForm.begin_date"></el-input>
+                        </el-form-item>
+                        <el-form-item label="品牌" prop="brand">
+                            <el-input v-model="ruleForm.brand"></el-input>
+                        </el-form-item>
+                        <el-form-item label="资产型号" prop="model">
+                            <el-input v-model="ruleForm.model"></el-input>
+                        </el-form-item>
+                        <el-form-item label="CPU" prop="cpu">
+                            <el-input v-model="ruleForm.cpu"></el-input>
+                        </el-form-item>
+                        <el-form-item label="内存" prop="memory">
+                            <el-input v-model="ruleForm.memory"></el-input>
+                        </el-form-item>
+                        <el-form-item label="显卡" prop="model">
+                            <el-input v-model="ruleForm.model"></el-input>
+                        </el-form-item>
+                        <el-form-item label="硬盘" prop="price">
+                            <el-input v-model="ruleForm.email"></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-form>
             </el-row>
-        </el-card>
-        <el-card class="mt_10">
-            <el-descriptions class="margin-top" title="基本信息" :column="3" :size="size" border>
-                <el-descriptions-item>
-                    <template slot="label">
-                        <i class="el-icon-user"></i>
-                        资产编号
-                    </template>
-                </el-descriptions-item>
-                <el-descriptions-item>
-                    <template slot="label">
-                        <i class="el-icon-mobile-phone"></i>
-                        资产类型
-                    </template>
-                </el-descriptions-item>
-                <el-descriptions-item>
-                    <template slot="label">
-                        <i class="el-icon-tickets"></i>
-                        使用人
-                    </template>
-                </el-descriptions-item>
-                <el-descriptions-item>
-                    <template slot="label">
-                        <i class="el-icon-office-building"></i>
-                        入库时间
-                    </template>
-                </el-descriptions-item>
-                <el-descriptions-item>
-                    <template slot="label">
-                        <i class="el-icon-office-building"></i>
-                        出库时间
-                    </template>
-                </el-descriptions-item>
-                <el-descriptions-item>
-                    <template slot="label">
-                        <i class="el-icon-office-building"></i>
-                        备注
-                    </template>
-                </el-descriptions-item>
-            </el-descriptions>
-            <el-descriptions class="margin-top" title="设备配置" :column="3" :size="size" border>
-                <el-descriptions-item>
-                    <template slot="label">
-                        <i class="el-icon-location-outline"></i>
-                        资产品牌
-                    </template>
-                    <el-tag size="small">品牌</el-tag>
-                </el-descriptions-item>
-                <el-descriptions-item>
-                    <template slot="label">
-                        <i class="el-icon-tickets"></i>
-                        资产型号
-                    </template>
-
-                </el-descriptions-item>
-                <el-descriptions-item>
-                    <template slot="label">
-                        <i class="el-icon-user"></i>
-                        CPU
-                    </template>
-                </el-descriptions-item>
-                <el-descriptions-item>
-                    <template slot="label">
-                        <i class="el-icon-mobile-phone"></i>
-                        内存
-                    </template>
-                    <el-input></el-input>
-                </el-descriptions-item>
-                <el-descriptions-item>
-                    <template slot="label">
-                        <i class="el-icon-location-outline"></i>
-                        显卡
-                    </template>
-                    <el-input></el-input>
-                </el-descriptions-item>
-                <el-descriptions-item>
-                    <template slot="label">
-                        <i class="el-icon-tickets"></i>
-                        硬盘
-                    </template>
-                    <el-tag size="small"></el-tag>
-                </el-descriptions-item>
-            </el-descriptions>
-            <el-button type="primary">保存</el-button>
-        </el-card>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="close">取 消</el-button>
+                <el-button type="primary" @click="save">保存</el-button>
+            </span>
+        </el-dialog>
     </div>
 </template>
 
 <script>
-import BreadCrumb from "@/components/BreadCrumb"
-import { mapMutations, } from 'vuex';
-export default {
-    data() {
-        return {
-            value1: '',
-            value2: '',
+import {post} from "@/utils/http"
+import { mapState, mapMutations } from "vuex"
+    export default {
+        props:["visible",'assetDetail'],
+        data(){
+            return{
+                ruleForm:{
+                },
+                title:"资产详情",
+            }
+        },
+        computed:{
+            ...mapState(["row"])
+        },
+        watch:{
+            visible(){
+                this.ruleForm=this.assetDetail
+            }
+        },
+        methods:{
+            ...mapMutations(["clearRow"]),
+            close(){
+                this.$refs.ruleform.resetFields()
+                this.$emit("hide")
+                this.clearRow()
+            },
+            save(){
+                this.$refs.ruleform.validate((vaild)=>{
+                    if(vaild){
+                        const id = this.ruleForm.employee_id
+                        if(id){
+                                post(`/employees/${id}`,this.ruleForm).then(()=>{
+                                    console.log(this.$notify,this)
+                                this.$notify({
+                                    title: '操作成功',
+                                    type: 'success'
+                                });
+                                this.close();
+                                this.$emit("reload")
+                            })
+                        } else {
+                            post("/employees/entry",this.ruleForm).then(()=>{
+                                this.$notify({
+                                    title: '操作成功',
+                                    type: 'success'
+                                });
+                                this.close();
+                                this.$emit("reload")
+                            })
+                        }
+                    }
+                })
+            },
+            handleClose(done) {
+                this.$confirm('确认关闭？')
+                .then(() => {
+                    done();
+                })
+                .catch(() => {});
+            },
         }
-    },
-    components: { BreadCrumb },
-    //组件路由离开守卫
-    beforeRouteLeave(to, from, next) {
-        if (to.path != "/Assets/list") {
-            //不是去列表页，把store的标记改为true
-            this.changeIsFromDetail(true)
-        }
-        next()
-    },
-    methods: {
-        ...mapMutations(["changeIsFromDetail"]),
-        back() {
-            this.$router.push("/Assets/list");
-        }
-    },
-}
+    }
 </script>
 
-<style lang="less" scoped>
-.a {
-    border-bottom: 2px solid #f3f3f3
-}
-</style>
+<style lang="less" scoped></style>

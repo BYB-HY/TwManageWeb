@@ -48,7 +48,7 @@ export default {
     },
     methods: {
         async getList(year) {
-            const res = await get(`/performance-summary/${year}`)
+            const res = await get(`/performance/summary/${year}`)
             this.options = res.data[1];
             this.tableData = res.data[0];
             this.allQuarter = res.data[2];

@@ -10,9 +10,6 @@
           </el-col>
           <el-col :span="18" class="operate">
             <el-button type="primary" @click="visible = true">添加提醒</el-button>
-            <!-- <el-button :disabled="!select.length" @click="operate(1)">审核</el-button>
-                    <el-button :disabled="!select.length" @click="operate(2)">修改</el-button>
-                    <el-button :disabled="!select.length" @click="operate(3)">作废</el-button> -->
           </el-col>
         </el-row>
       </el-card>
@@ -20,7 +17,9 @@
         <el-table :data="tableData" style="width: 100%" v-loading="loading" element-loading-text="拼命加载中"
           element-loading-spinner="el-icon-loading" element-loading-background="rgba(0, 0, 0, 0.8)"
           @selection-change="handleSelectionChange">
+          <!-- 选择框 -->
           <el-table-column type="selection"></el-table-column>
+          <!-- 标题 -->
           <el-table-column prop="title" label="标题" width="180" fixed="left"></el-table-column>
           <el-table-column prop="expiry_date" label="到期时间" width="180" fixed="left"></el-table-column>
           <el-table-column prop="descr" label="备注" width="180"></el-table-column>
@@ -90,8 +89,9 @@
       async loadData() {
         this.loading = true
         const res = await get('/reminder/list', this.params)
-        this.tableData = res.data
-        this.total = res.total
+        this.tableData = res.data.rows
+        console.log(this.tableData)
+        this.total = res.data.count
         this.loading = false
       },
       handleSizeChange(pageSize) {

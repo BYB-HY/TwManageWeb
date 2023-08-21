@@ -66,9 +66,10 @@ import BreadCrumb from "@/components/BreadCrumb"
        methods:{
         async loadData(){
             this.loading=true
-            const res = await post('/address_book',this.params)
-            this.tableData = res.data
-            this.total=res.total
+            const res = await post('/employees/address_book',this.params)
+            console.log(res)
+            this.tableData = res.data.rows
+            this.total=res.data.count
             this.loading=false
         },
         handleSizeChange(per_page){

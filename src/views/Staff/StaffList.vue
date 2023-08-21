@@ -88,9 +88,9 @@ import {mapMutations} from "vuex"
        methods:{
         async loadData(){
             this.loading=true
-            const res = await post('/employees_list',this.params)
-            this.tableData = res.data
-            this.total=res.total
+            const res = await post('/employees/list',this.params)
+            this.tableData = res.data.rows
+            this.total=res.data.count
             this.loading=false
         },
         handleSizeChange(per_page){
